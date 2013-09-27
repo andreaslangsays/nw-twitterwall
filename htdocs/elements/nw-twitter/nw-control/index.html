@@ -1,0 +1,56 @@
+<!--
+/*
+ * The <nw-control>-element
+ *
+ * Setting the relevant hashtag, the amount of tweets to display
+ * and the update-interval.
+**/
+-->
+<polymer-element name="nw-control" attributes="q count interval caption">
+
+	<template>
+		<link rel="stylesheet" href="styles/icons.css">
+		<link rel="stylesheet" href="styles/main.css">
+
+		<div class="panel anim" id="form">
+			<label>
+				<span>Search</span>
+				<select id="q">
+					<option template repeat="{{ opt in options }}" value="{{ opt.val }}" selected?="{{ opt.cur }}">
+						{{ opt.caption }}
+					</option>
+				</select>
+			</label>
+			<label>
+				<span>Count</span>
+				<input type="text" id="count" value="{{ count }}">
+			</label>
+			<label>
+				<span>Interval</span>
+				<input type="text" id="interval" value="{{ interval }}">
+			</label>
+			<button type="button" on-click="update">
+				<i class="icon-arrows-cw" aria-hidden="true"></i>
+			</button>
+			<button type="button"
+				on-click="toggleControl"
+				data-open="toggle"
+				data-close="form">
+				<i class="icon-cancel" aria-hidden="true"></i>
+			</button>
+		</div>
+		<div class="panel anim slide in" id="toggle">
+			<strong class="title">{{ caption }}</strong>
+			<button type="button"
+				class="settings"
+				on-click="toggleControl"
+				data-open="form"
+				data-close="toggle">
+				<i class="icon-cog" aria-hidden="true"></i>
+			</button>
+		</div>
+	</template>
+
+	<script src="scripts/main.js"></script>
+
+</polymer-element>

@@ -1,0 +1,16 @@
+{
+  "name": "nw-twitterwall",
+  "version": "0.0.1",
+  "description": "a polymer-experiment",
+  "repository": "",
+  "keywords": [
+    "polymer, twitter"
+  ],
+  "author": "Emanuel Kluge",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-sass": "~0.5.0"
+  }
+}

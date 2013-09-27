@@ -1,0 +1,23 @@
+// General
+body {
+	font: normal 100%/1.2 sans-serif;
+	overflow-y: scroll;
+	}
+
+.twitter-widget {
+	max-width: 350px;
+	padding: .3em;
+	margin: 4em auto 2em auto;
+	background-color: #F1F1F1;
+	}
+
+a:link,
+a:visited {
+	color: #0095B5;
+	text-decoration: none;
+	}
+
+a:hover,
+a:focus {
+	text-decoration: underline;
+	}

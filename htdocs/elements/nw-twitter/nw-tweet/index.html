@@ -1,0 +1,27 @@
+<!--
+/*
+ * The <nw-tweet>-element
+ *
+ * Display the actual tweet-content.
+**/
+-->
+<polymer-element name="nw-tweet" extends="li" attributes="tweet">
+
+	<template>
+		<link rel="stylesheet" href="styles.css">
+
+		<div id="tweet-{{ tweet.id }}" class="tweet {{show}}">
+			<img src="{{ tweet.user.profile_image_url }}" alt="" class="tweet-img" />
+			<p class="tweet-text">{{ tweet.text }}</p>
+			<small class="tweet-meta">
+				by <a href="https://twitter.com/{{ tweet.user.screen_name }}">@{{ tweet.user.screen_name }}</a> &mdash;
+				<a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id }}">
+					<time datetime="{{ tweet.created_at }}" pubdate>{{ tweet.elapsed_time }}</time>
+				</a>
+			</small>
+		</div>
+	</template>
+
+	<script src="scripts.js"></script>
+
+</polymer-element>

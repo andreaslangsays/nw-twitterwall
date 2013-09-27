@@ -1,0 +1,108 @@
+<!--
+/*
+ * The <nw-api>-element
+ *
+ * Element for communicating with the tweets-API.
+ *
+ * Depends on the <polymer-xhr>-element.
+**/
+-->
+<link rel="import" href="../polymer-xhr.html">
+
+<polymer-element name="nw-api" attributes="url">
+
+	<template>
+		<style>
+			@host {
+				* {
+					display: none;
+					}
+				}
+		</style>
+	</template>
+
+	<script>
+		Polymer('nw-api', {
+
+			/*
+			 * Setting the `url`-property as empty string.
+			**/
+			url: '',
+
+			/*
+			 * Setting the `loading`-state to false.
+			**/
+			loading: false,
+
+			/*
+			 * Instantiating the <polymer-xhr>-element on creation.
+			**/
+			created: function () {
+				this.xhr = document.createElement('polymer-xhr');
+			},
+
+			/*
+			 * Requesting data asynchronuously.
+			**/
+			load: function (args) {
+
+				/*
+				 * Abort, if it's currently requesting data.
+				**/
+				if ( this.loading ) {
+					return;
+				}
+
+				this.loading = true;
+				this.xhr.request({
+					url: this.url,
+					params: args,
+					callback: this.processRequest.bind(this)
+				});
+
+			},
+
+			/*
+			 * Publishing the results if the request was successful.
+			**/
+			processRequest: function (resp, xhr) {
+
+				if ( xhr.readyState === 4 && xhr.status === 200 ) {
+					this.asyncFire(
+						'nw-api-loaded',
+						JSON.parse(resp).statuses
+					);
+				}
+				this.loading = false;
+
+			},
+
+			/*
+			 * Start data-polling to constantly refresh the tweets-data.
+			**/
+			startPolling: function (args, interval, initial) {
+
+				this.load(args);
+
+				if ( !!initial && this.timeout ) {
+					this.endPolling();
+				}
+
+				this.timeout = this.asyncMethod(function () {
+					this.startPolling(args, interval);
+				}, null, interval * 1000);
+
+			},
+
+			/*
+			 * End the data-polling.
+			**/
+			endPolling: function () {
+				clearTimeout(this.timeout);
+				return this;
+			}
+
+		});
+	</script>
+
+</polymer-element>

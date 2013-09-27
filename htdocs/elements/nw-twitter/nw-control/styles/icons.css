@@ -1,0 +1,38 @@
+@font-face {
+	font-family: 'nw-twitterwall';
+	src: url('../font/nw-twitterwall.eot?881940');
+	src: url('../font/nw-twitterwall.eot?881940#iefix') format('embedded-opentype'),
+		url('../font/nw-twitterwall.woff?881940') format('woff'),
+		url('../font/nw-twitterwall.ttf?881940') format('truetype'),
+		url('../font/nw-twitterwall.svg?881940#nw-twitterwall') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	}
+ 
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+	font-family: "nw-twitterwall";
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 1em;
+
+	/* Animation center compensation - margins should be symmetric */
+	margin-left: .2em;
+	}
+
+.icon-cog:before { content: '\e801'; } /* '' */
+.icon-cancel:before { content: '\e800'; } /* '' */
+.icon-arrows-cw:before { content: '\e802'; } /* '' */

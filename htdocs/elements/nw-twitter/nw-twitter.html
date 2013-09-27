@@ -1,0 +1,164 @@
+<!--
+/*
+ * The <nw-twitter>-element.
+ *
+ * Wrapper-element for the control-element and the tweet-elements.
+ * Responsible for managing the communication between control-
+ * element and data-API.
+**/
+-->
+<link rel="import" href="nw-api.html">
+<link rel="import" href="nw-control/">
+<link rel="import" href="nw-tweet/">
+
+<polymer-element name="nw-twitter" attributes="q count interval caption">
+
+	<template>
+		<style>
+			@host {
+				:scope {
+					display: block;
+					border: 1px solid #BBB;
+					background-color: #FFF;
+					overflow: hidden;
+					-webkit-backface-visibiblity: hidden;
+					backface-visibiblity: hidden;
+					}
+				}
+			#tweets {
+				padding: .5em 0 0 0;
+				margin: 0;
+				}
+			#tweets li {
+				border-bottom: 1px solid #E3E3E3;
+				}
+			#tweets li:nth-child(odd) {
+				background-color: #F9F9F9;
+				}
+		</style>
+		<nw-control
+			id="control"
+			q="{{ q }}"
+			count="{{ count }}"
+			interval="{{ interval }}"
+			caption="{{ caption }}"></nw-control>
+		<ul id="tweets">
+			<template repeat="{{ tweets as tweet }}">
+				<li is="nw-tweet" tweet="{{ tweet }}"></li>
+			</template>
+		</ul>
+	</template>
+
+	<script>
+		/*
+		 * Functionality for the <nw-twitter>-element.
+		**/
+		Polymer('nw-twitter', {
+
+			/*
+			 * Polling-interval (in seconds)
+			 *
+			 * Setting the default polling-interval to zero (=> no polling)
+			**/
+			interval: 0,
+
+			/*
+			 * Default tweet-count is ten.
+			**/
+			count: 10,
+
+			/*
+			 * The default hashtag to search tweets
+			 * for is `polymer`.
+			**/
+			q: 'polymer',
+
+			/*
+			 * The widget's caption. Default value
+			 * is `<nw-twitterwall>`
+			**/
+			caption: '\u003Cnw-twitterwall\u003E',
+
+			/*
+			 * Registering the `tweets`-array,
+			 * home of all fetched tweets.
+			**/
+			tweets: [],
+
+			/*
+			 * Instantiating the <nw-api>-element, making some event-bindings
+			 * and calling the first data-request.
+			**/
+			created: function () {
+
+				this.api = document.createElement('nw-api');
+				this.api.url = 'api/';
+				this.api.addEventListener('nw-api-loaded', this.applyData.bind(this));
+				this.$
+					.control
+					.addEventListener('nw-control-changed', this.applyParams.bind(this));
+
+				this.request();
+
+			},
+
+			/*
+			 * Collecting the request's arguments. If the interval-value
+			 * is greater than zero, the data-polling starts. Otherwise
+			 * a single request is made.
+			**/
+			request: function () {
+
+				var args = {
+					q: '#' + this.q,
+					count: this.count
+				};
+
+				if ( this.interval ) {
+					this.api.startPolling(args, this.interval, true);
+					return;
+				}
+				this.api
+					.endPolling()
+					.load(args);
+
+			},
+
+			/*
+			 * Applying the altered request-arguments
+			 * sent by the control-element. Afterwards
+			 * a new request is made.
+			**/
+			applyParams: function (evnt) {
+
+				this.q = evnt.detail.q;
+				this.count = evnt.detail.count;
+				this.interval = evnt.detail.interval;
+				this.request();
+
+			},
+
+			/*
+			 * Populating the `tweets`-array. To realize a delayed
+			 * fade-in of the tweets, each tweet has to get its index,
+			 * as there's unfortunately no `index`-variable inside
+			 * the `repeat`-loop.
+			**/
+			applyData: function (evnt, detail, sender) {
+				this.tweets = this.setIndeces(evnt.detail);
+			},
+
+			/*
+			 * Iterating over the `tweets`-array and setting the index.
+			**/
+			setIndeces: function (tweets) {
+				return tweets.map(function (item, i) {
+					item.index =  i;
+					return item;
+				});
+			}
+
+		});
+	</script>
+
+</polymer-element>
